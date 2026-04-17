@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Citing Lightkurve &amp; its dependencies &#8212; Lightkurve </title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=05a62d9f" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script src="../_static/documentation_options.js?v=f82422d1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Full changelog" href="changelog.html" />
+    <link rel="prev" title="Installing Lightkurve" href="install.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-69171-9', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">Lightkurve v2.6</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whats-new-v2.html">
+  What's new?
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../quickstart.html">
+  Quickstart
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/index.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  About Lightkurve
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../development/index.html">
+  Developing for Lightkurve
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/lightkurve/lightkurve" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="install.html">
+   Installing Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Citing Lightkurve &amp; its dependencies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="changelog.html">
+   Full changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="other_software.html">
+   Other software
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#citing-dependencies">
+   Citing dependencies
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="citing-lightkurve-its-dependencies">
+<span id="citing"></span><h1>Citing Lightkurve &amp; its dependencies<a class="headerlink" href="#citing-lightkurve-its-dependencies" title="Link to this heading">¶</a></h1>
+<p>If you use Lightkurve for work or research presented in a publication, we
+request the following acknowledgment or citation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>This research made use of Lightkurve, a Python package for Kepler and TESS data analysis (Lightkurve Collaboration, 2018).
+</pre></div>
+</div>
+<p>where (Lightkurve Collaboration, 2018) is a citation to the ADS entry <a class="reference external" href="http://adsabs.harvard.edu/abs/2018ascl.soft12013L">2018ascl.soft12013L</a>.
+The recommended BibTeX entry for this citation is:</p>
+<div class="highlight-latex notranslate"><div class="highlight"><pre><span></span>@MISC<span class="nb">{</span>2018ascl.soft12013L,
+   author = <span class="nb">{{</span>Lightkurve Collaboration<span class="nb">}</span> and <span class="nb">{</span>Cardoso<span class="nb">}</span>, J.~V.~d.~M. and
+             <span class="nb">{</span>Hedges<span class="nb">}</span>, C. and <span class="nb">{</span>Gully-Santiago<span class="nb">}</span>, M. and <span class="nb">{</span>Saunders<span class="nb">}</span>, N. and
+             <span class="nb">{</span>Cody<span class="nb">}</span>, A.~M. and <span class="nb">{</span>Barclay<span class="nb">}</span>, T. and <span class="nb">{</span>Hall<span class="nb">}</span>, O. and
+             <span class="nb">{</span>Sagear<span class="nb">}</span>, S. and <span class="nb">{</span>Turtelboom<span class="nb">}</span>, E. and <span class="nb">{</span>Zhang<span class="nb">}</span>, J. and
+             <span class="nb">{</span>Tzanidakis<span class="nb">}</span>, A. and <span class="nb">{</span>Mighell<span class="nb">}</span>, K. and <span class="nb">{</span>Coughlin<span class="nb">}</span>, J. and
+             <span class="nb">{</span>Bell<span class="nb">}</span>, K. and <span class="nb">{</span>Berta-Thompson<span class="nb">}</span>, Z. and <span class="nb">{</span>Williams<span class="nb">}</span>, P. and
+             <span class="nb">{</span>Dotson<span class="nb">}</span>, J. and <span class="nb">{</span>Barentsen<span class="nb">}</span>, G.<span class="nb">}</span>,
+    title = &quot;<span class="nb">{</span>Lightkurve: Kepler and TESS time series analysis in Python<span class="nb">}</span>&quot;,
+ keywords = <span class="nb">{</span>Software, NASA<span class="nb">}</span>,
+howpublished = <span class="nb">{</span>Astrophysics Source Code Library<span class="nb">}</span>,
+     year = 2018,
+    month = dec,
+archivePrefix = &quot;ascl&quot;,
+   eprint = <span class="nb">{</span>1812.013<span class="nb">}</span>,
+   adsurl = <span class="nb">{</span>http://adsabs.harvard.edu/abs/2018ascl.soft12013L<span class="nb">}</span>,
+<span class="nb">}</span>
+</pre></div>
+</div>
+<p>In addition, you may elect to cite a specific version of Lightkurve using the <a class="reference external" href="https://doi.org/10.5281/zenodo.1181928">version-specific DOI</a> provided by Zenodo.</p>
+<section id="citing-dependencies">
+<h2>Citing dependencies<a class="headerlink" href="#citing-dependencies" title="Link to this heading">¶</a></h2>
+<p>Lightkurve was built on top of a number of powerful libraries,
+including <a class="reference external" href="https://www.numpy.org/">NumPy</a>, <a class="reference external" href="https://scipy.org">SciPy</a>, and <a class="reference external" href="https://matplotlib.org/">Matplotlib</a>.
+We strongly encourage you to cite these packages as well.
+In particular, we request that all astronomy publications cite the relevant
+astronomy packages, which include:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://astropy.org">astropy</a> (see <a class="reference external" href="https://www.astropy.org/acknowledging.html">astropy citation instructions</a>) enabled all features.</p></li>
+<li><p><a class="reference external" href="https://astroquery.readthedocs.io">astroquery</a> (see <a class="reference external" href="https://github.com/astropy/astroquery#citing-astroquery">astroquery citation instructions</a>) enabled all <code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code> functions.</p></li>
+<li><p><a class="reference external" href="https://mast.stsci.edu/tesscut/">tesscut</a> (see <a class="reference external" href="https://ascl.net/code/v/2239">tesscut citation instructions</a>) enabled <code class="xref py py-obj docutils literal notranslate"><span class="pre">search_tesscut</span></code>.</p></li>
+</ul>
+<p>If your package is missing from the list above, please <a class="reference external" href="https://github.com/lightkurve/lightkurve">open a pull request</a> to add it.</p>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="install.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Installing Lightkurve</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="changelog.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Full changelog</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright Lightkurve developers.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

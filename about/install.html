@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Installing Lightkurve &#8212; Lightkurve </title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css?v=05a62d9f" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script src="../_static/documentation_options.js?v=f82422d1"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Citing Lightkurve &amp; its dependencies" href="citing.html" />
+    <link rel="prev" title="About Lightkurve" href="index.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-69171-9', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../index.html">
+<p class="title">Lightkurve v2.6</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../whats-new-v2.html">
+  What's new?
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../quickstart.html">
+  Quickstart
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../tutorials/index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../reference/index.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="index.html">
+  About Lightkurve
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../development/index.html">
+  Developing for Lightkurve
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/lightkurve/lightkurve" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <!-- Only show if we have sidebars configured, else just a small margin  -->
+            <div class="col-12 col-md-3 bd-sidebar">
+              <div class="sidebar-start-items"><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+  <div class="bd-toc-item active">
+    <ul class="current nav bd-sidenav">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Installing Lightkurve
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="citing.html">
+   Citing Lightkurve &amp; its dependencies
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="changelog.html">
+   Full changelog
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="other_software.html">
+   Other software
+  </a>
+ </li>
+</ul>
+
+  </div>
+</nav>
+              </div>
+              <div class="sidebar-end-items">
+              </div>
+            </div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#using-pip">
+   Using pip
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#requirements">
+   Requirements
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installing-the-development-version">
+   Installing the development version
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-9 col-xl-7 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <section id="installing-lightkurve">
+<span id="installation"></span><h1>Installing Lightkurve<a class="headerlink" href="#installing-lightkurve" title="Link to this heading">¶</a></h1>
+<section id="using-pip">
+<h2>Using pip<a class="headerlink" href="#using-pip" title="Link to this heading">¶</a></h2>
+<p>The easiest way to install <em>Lightkurve</em> and all of its dependencies is to use the <code class="docutils literal notranslate"><span class="pre">pip</span></code> command,
+which is a standard part of all Python distributions.
+To install <em>Lightkurve</em>, run the following command in a terminal window:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -m pip install lightkurve --upgrade
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--upgrade</span></code> flag is optional, but recommended if you already
+have <em>Lightkurve</em> installed and want to upgrade to the latest version.</p>
+<p>Depending on the specific Python environment, you may need to replace <code class="docutils literal notranslate"><span class="pre">python</span></code>
+with the correct Python interpreter, e.g., <code class="docutils literal notranslate"><span class="pre">python3</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you encounter a <code class="docutils literal notranslate"><span class="pre">PermissionError</span></code> this means that you do not have the
+required administrative access to install new packages to your Python
+installation.  In this case you may consider using the <code class="docutils literal notranslate"><span class="pre">--user</span></code> option
+to install the package into your home directory.  You can read more
+about how to do this in the <a class="reference external" href="http://www.pip-installer.org/en/1.2.1/other-tools.html#using-pip-with-the-user-scheme">pip documentation</a>.</p>
+</div>
+<p>To verify which version of <em>Lightkurve</em> you have installed, run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ python -c &quot;import lightkurve; print(lightkurve.__version__)&quot;
+</pre></div>
+</div>
+</section>
+<section id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading">¶</a></h2>
+<p><em>Lightkurve</em> requires the following packages:</p>
+<ul class="simple">
+<li><p>Astropy</p></li>
+<li><p>Numpy</p></li>
+<li><p>Scipy</p></li>
+<li><p>Matplotlib</p></li>
+<li><p>Astroquery</p></li>
+<li><p>Bokeh (for interactive widgets).</p></li>
+<li><p>Pandas.</p></li>
+</ul>
+<p>If you install <em>Lightkurve</em> using <code class="docutils literal notranslate"><span class="pre">pip</span></code> as explained above,
+these dependencies will be installed automatically if needed.</p>
+<p>Refer to <code class="docutils literal notranslate"><span class="pre">[tool.poetry.dependencies]</span></code> section of
+<a class="reference external" href="../pyproject.toml">pyproject.toml</a>
+for the minimum versions of the packages required.</p>
+</section>
+<section id="installing-the-development-version">
+<h2>Installing the development version<a class="headerlink" href="#installing-the-development-version" title="Link to this heading">¶</a></h2>
+<p>If you want to experiment with the latest development version of
+<em>Lightkurve</em>, you can install it straight from the main branch on GitHub:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lightkurve/lightkurve.git
+$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>lightkurve
+$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+<p>If you want to have a so-called editable install which enables the installed
+version to immediately reflect changes made in the source tree, you can use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>poetry
+$<span class="w"> </span>poetry<span class="w"> </span>install
+</pre></div>
+</div>
+<p>Please see our guide on <a class="reference internal" href="../development/index.html#install-dev-env"><span class="std std-ref">Installing the development environment</span></a>
+for additional instructions.</p>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="index.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">About Lightkurve</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="citing.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Citing Lightkurve &amp; its dependencies</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright Lightkurve developers.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

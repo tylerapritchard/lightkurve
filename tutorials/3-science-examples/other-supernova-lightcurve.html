@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to make a supernova lightcurve? &#8212; Lightkurve </title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=05a62d9f" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script src="../../_static/documentation_options.js?v=f82422d1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="API" href="../../reference/index.html" />
+    <link rel="prev" title="How to understand and manipulate the periodogram of an oscillating star" href="asteroseismology-oscillating-star-periodogram.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-69171-9', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../index.html">
+<p class="title">Lightkurve v2.6</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats-new-v2.html">
+  What's new?
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../quickstart.html">
+  Quickstart
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../reference/index.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../about/index.html">
+  About Lightkurve
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Developing for Lightkurve
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/lightkurve/lightkurve" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <div class="col-12 col-md-1 col-xl-2 bd-sidebar no-sidebar"></div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+
+<nav id="bd-toc-nav">
+    
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-11 col-xl-8 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div style="float:right; margin-bottom:1em;">
+    <a href="https://github.com/lightkurve/lightkurve/raw/main/docs/source/tutorials/3-science-examples/other-supernova-lightcurve.ipynb"><img src="https://img.shields.io/badge/Notebook-Download-130654?logo=Jupyter&labelColor=fafafa"></a>
+    <a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Flightkurve%2Flightkurve&urlpath=lab%2Ftree%2Flightkurve%2Fdocs%2Fsource%2Ftutorials/3-science-examples/other-supernova-lightcurve.ipynb&branch=main"><img src="https://img.shields.io/badge/Notebook-Open%20in%20TIKE-130654?logo=Jupyter&labelColor=fafafa"></a>
+</div>
+<br style="clear:both;"><section id="How-to-make-a-supernova-lightcurve?">
+<h1>How to make a supernova lightcurve?<a class="headerlink" href="#How-to-make-a-supernova-lightcurve?" title="Link to this heading">¶</a></h1>
+<p>You can use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> to extract a lightcurve of transient phenomena, including supernovae. Supernovae data analysis presents a few unique challenges compared to data analysis of isolated point sources. We can anticipate some of the common limitations of the Kepler pipeline-processed lightcurves, which make no attempt to hone-in on supernovae. For example, the supernova resides in a host galaxy which may itself be time variable due to, <em>e.g.</em>, active galactic nuclei (AGN). Common detrending
+methods, such as “Self Flat Fielding” (<a class="reference external" href="https://archive.stsci.edu/prepds/k2sff/">SFF</a>) assume that centroid shifts are due entirely to undesired motion of the spacecraft, while transients induce bona-fide astrophysical centroid motion as the postage-stamp photocenter gets weighted towards the increasingly luminous transient’s photocenter.</p>
+<p>In this tutorial we will custom-make a custom supernova lightcurve with these simple steps:</p>
+<ol class="arabic simple">
+<li><p>Create an appropriate aperture mask to isolate the transient from its host galaxy</p></li>
+<li><p>Extract aperture photometry of both the supernova and the background attributable to the host galaxy</p></li>
+<li><p>Apply “Self Flat Fielding” (SFF) detrending techniques</p></li>
+<li><p>Plot the lightcurve</p></li>
+</ol>
+<p>We will focus on an unusual class of transient recently observed in K2, the so-called <em>Fast-Evolving Luminous Transients</em> or <strong>FELT</strong>s. These transients rise and fall within a mere few days, much shorter than conventional supernovae, which can last hundreds of days. The discovery of <strong>KSN2015k</strong> was recently reported by <a class="reference external" href="https://www.nature.com/articles/s41550-018-0423-2">Rest et al. 2018</a> and summarized in several press releases including this one from
+<a class="reference external" href="https://www.jpl.nasa.gov/news/news.php?feature=7086">JPL</a>.</p>
+<p>The EPIC ID for <code class="docutils literal notranslate"><span class="pre">KSN2015k</span></code>’s host galaxy is <strong>212593538</strong>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightkurve</span><span class="w"> </span><span class="kn">import</span> <span class="n">search_targetpixelfile</span>
+<span class="n">tpf</span> <span class="o">=</span> <span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;EPIC 212593538&#39;</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="s2">&quot;K2&quot;</span><span class="p">,</span> <span class="n">campaign</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">download</span><span class="p">()</span>
+<span class="n">tpf</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(3545, 8, 8)
+</pre></div></div>
+</div>
+<p>The TPF has 3545 useable cadences, with an <span class="math notranslate nohighlight">\(8 \times 8\)</span> postage stamp image.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="mi">100</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_4_0.png" src="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_4_0.png" />
+</div>
+</div>
+<p>The coarse angular resolution of Kepler means that this host galaxy resembles a pixelated blob. We’re showing frame 100 out of 3561 frames– we do not presently know when the supernova went off so it’s hard to say whether there is a supernova in the image or not.</p>
+<p>One of the pixels is white, which represents <code class="docutils literal notranslate"><span class="pre">NaN</span></code> values in the color image. In fact, this pixel within the <span class="math notranslate nohighlight">\(8 \times 8\)</span> square postage stamp image boundary is <code class="docutils literal notranslate"><span class="pre">NaN</span></code> in all 3561 cadences, indicating that this TPF has an irregular boundary with <span class="math notranslate nohighlight">\(N_{\rm pix} = 63\)</span>. Irregular boundaries are a common space-saving strategy for the distant Kepler telescope.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">postage_stamp_mask</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">hdu</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">postage_stamp_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+63
+</pre></div></div>
+</div>
+<p>Let’s make a lightcurve summing <em>all of the pixels</em> to see if we can pick out the FELT <em>by-eye</em>. We will pre-process the lightcurve to remove sharp discontinuities in the time series that arise from spurious cosmic rays, not our astrophysical transient of interest.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_raw</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">spurious_cadences</span> <span class="o">=</span> <span class="n">lc_raw</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">return_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lc_clean</span> <span class="o">=</span> <span class="n">lc_raw</span><span class="p">[</span><span class="o">~</span><span class="n">spurious_cadences</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_clean</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_9_0.png" src="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_9_0.png" />
+</div>
+</div>
+<p><strong>Voilà</strong>! We indeed see what looks like a sharply-rising phenomenon at <span class="math notranslate nohighlight">\(t = 2400-2415\)</span> days, distinct from the smoothly-varying background, which could arise from either instrumental artifacts or host-galaxy.</p>
+<p>Let’s identify where the FELT was located within the host galaxy and its K2 postage stamp. We can either interactively visually inspect the lightcurve to look for the position of the explosion, or we can programmatically select cadences to estimate a difference image. I used <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.KeplerTargetPixelFile.interact.html">interact()</a> with a fine-tuned screen-stretch to see that the FELT appears near pixel column 830, row 231. Furthermore,
+it looks like the flux drops off significantly in the first and last columns.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#tpf.interact(lc=lc_clean)</span>
+</pre></div>
+</div>
+</div>
+<p>Once we have our aperture and background masks, we can estimate the net flux <span class="math notranslate nohighlight">\(f_{\rm net}\)</span> as:</p>
+<p><span class="math notranslate nohighlight">\(f_{\rm net}(t) = f_{\rm aper}(t) - f_{\rm b}(t) \cdot N_{\rm aper}\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(f_{\rm aper}\)</span> is the total summed flux in an aperture of size <span class="math notranslate nohighlight">\(N_{\rm aper}\)</span> pixels, and <span class="math notranslate nohighlight">\(f_{b}\)</span> is our estimate for the (spatially-flat) background level per pixel, in each cadence.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aperture_mask</span> <span class="o">=</span> <span class="n">postage_stamp_mask</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">aperture_mask</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">aperture_mask</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">background_mask</span> <span class="o">=</span> <span class="o">~</span><span class="n">aperture_mask</span> <span class="o">&amp;</span> <span class="n">postage_stamp_mask</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">N_targ_pixels</span><span class="p">,</span> <span class="n">N_back_pixels</span> <span class="o">=</span> <span class="n">aperture_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">background_mask</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">N_targ_pixels</span><span class="p">,</span> <span class="n">N_back_pixels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(48, 15)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">);</span>
+<span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">background_mask</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_16_0.png" src="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_16_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_16_1.png" src="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_16_1.png" />
+</div>
+</div>
+<p>Checks out. Let’s apply the equation above:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_aper</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">)</span>
+<span class="n">lc_back_per_pixel</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">background_mask</span><span class="p">)</span> <span class="o">/</span> <span class="n">N_back_pixels</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_net</span> <span class="o">=</span> <span class="n">lc_aper</span> <span class="o">-</span> <span class="n">lc_back_per_pixel</span><span class="o">.</span><span class="n">flux</span> <span class="o">*</span> <span class="n">N_targ_pixels</span>
+</pre></div>
+</div>
+</div>
+<p>Drop the previously-identified spurious cadences.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_net</span> <span class="o">=</span> <span class="n">lc_net</span><span class="p">[</span><span class="o">~</span><span class="n">spurious_cadences</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc_net</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_22_0.png" src="../../_images/tutorials_3-science-examples_other-supernova-lightcurve_22_0.png" />
+</div>
+</div>
+<p>Much better! We no longer see the instrumentally-induced background wiggles.</p>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="asteroseismology-oscillating-star-periodogram.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">How to understand and manipulate the periodogram of an oscillating star</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../../reference/index.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright Lightkurve developers.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

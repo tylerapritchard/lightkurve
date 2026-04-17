@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How to recover the first TESS planet candidate with Lightkurve? &#8212; Lightkurve </title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css?v=05a62d9f" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script src="../../_static/documentation_options.js?v=f82422d1"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Machine learning style preprocessing with lightkurve" href="exoplanets-machine-learning-preprocessing.html" />
+    <link rel="prev" title="How to recover a known planet in Kepler data?" href="exoplanets-recover-a-known-planet.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en">
+    
+
+    <!-- Google Analytics -->
+    
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+                        window.ga = window.ga || function () {
+                            (ga.q = ga.q || []).push(arguments) };
+                        ga.l = +new Date;
+                        ga('create', 'UA-69171-9', 'auto');
+                        ga('set', 'anonymizeIp', true);
+                        ga('send', 'pageview');
+                    </script>
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+    <nav class="navbar navbar-light navbar-expand-lg bg-light fixed-top bd-navbar" id="navbar-main"><div class="container-xl">
+
+  <div id="navbar-start">
+    
+    
+<a class="navbar-brand" href="../../index.html">
+<p class="title">Lightkurve v2.6</p>
+</a>
+
+    
+  </div>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  
+  <div id="navbar-collapsible" class="col-lg-9 collapse navbar-collapse">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <ul id="navbar-main-elements" class="navbar-nav">
+    <li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../whats-new-v2.html">
+  What's new?
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../quickstart.html">
+  Quickstart
+ </a>
+</li>
+
+<li class="toctree-l1 current active nav-item">
+ <a class="reference internal nav-link" href="../index.html">
+  Tutorials
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../reference/index.html">
+  API
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../about/index.html">
+  About Lightkurve
+ </a>
+</li>
+
+<li class="toctree-l1 nav-item">
+ <a class="reference internal nav-link" href="../../development/index.html">
+  Developing for Lightkurve
+ </a>
+</li>
+
+    
+</ul>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+        <li class="nav-item">
+          <a class="nav-link" href="https://github.com/lightkurve/lightkurve" rel="noopener" target="_blank" title="GitHub"><span><i class="fab fa-github-square"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+</div>
+    </nav>
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+            
+            <div class="col-12 col-md-1 col-xl-2 bd-sidebar no-sidebar"></div>
+            
+          
+
+          
+          <div class="d-none d-xl-block col-xl-2 bd-toc">
+            
+              
+              <div class="toc-item">
+                
+<div class="tocsection onthispage mt-5 pt-1 pb-3">
+    <i class="fas fa-list"></i> On this page
+</div>
+
+<nav id="bd-toc-nav">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Building-Light-Curves-from-TPFs">
+   Building Light Curves from TPFs
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#Comparing-two-apertures">
+   Comparing two apertures
+  </a>
+ </li>
+</ul>
+
+</nav>
+              </div>
+              
+              <div class="toc-item">
+                
+              </div>
+              
+            
+          </div>
+          
+
+          
+          
+            
+          
+          <main class="col-12 col-md-11 col-xl-8 py-md-5 pl-md-5 pr-md-4 bd-content" role="main">
+              
+              <div>
+                
+  <div style="float:right; margin-bottom:1em;">
+    <a href="https://github.com/lightkurve/lightkurve/raw/main/docs/source/tutorials/3-science-examples/exoplanets-recover-first-tess-candidate.ipynb"><img src="https://img.shields.io/badge/Notebook-Download-130654?logo=Jupyter&labelColor=fafafa"></a>
+    <a href="https://timeseries.science.stsci.edu/hub/user-redirect/git-pull?repo=https%3A%2F%2Fgithub.com%2Flightkurve%2Flightkurve&urlpath=lab%2Ftree%2Flightkurve%2Fdocs%2Fsource%2Ftutorials/3-science-examples/exoplanets-recover-first-tess-candidate.ipynb&branch=main"><img src="https://img.shields.io/badge/Notebook-Open%20in%20TIKE-130654?logo=Jupyter&labelColor=fafafa"></a>
+</div>
+<br style="clear:both;"><section id="How-to-recover-the-first-TESS-planet-candidate-with-Lightkurve?">
+<h1>How to recover the first TESS planet candidate with <em>Lightkurve</em>?<a class="headerlink" href="#How-to-recover-the-first-TESS-planet-candidate-with-Lightkurve?" title="Link to this heading">¶</a></h1>
+<p>Data from the TESS mission are <a class="reference external" href="https://archive.stsci.edu/prepds/tess-data-alerts/">available from the data archive at MAST</a>. This tutorial demonstrates how the <a class="reference external" href="https://lightkurve.github.io/lightkurve/index.html">Lightkurve Python package</a> can be used to read in these data and create your own TESS light curves with different aperture masks.</p>
+<p>Below is a quick tutorial on how to get started using <em>Lightkurve</em> and TESS data. We’ll use the nearby, bright target Pi Mensae (ID 261136679), around which the mission team recently discovered a short period planet candidate on a 6.27 day orbit. See the <a class="reference external" href="https://arxiv.org/abs/1809.05967">pre-print paper by Huang et al (2018)</a> for more details.</p>
+<p>TESS data is stored in a binary file format which is documented in the <a class="reference external" href="https://archive.stsci.edu/missions/tess/doc/EXP-TESS-ARC-ICD-TM-0014.pdf">TESS Science Data Products Description Document</a>. <em>Lightkurve</em> provides a <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.TessTargetPixelFile.html?highlight=tesstargetpixelfile#lightkurve.TessTargetPixelFile">TessTargetPixelFile</a> class which allows you to interact with the data easily.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">import</span><span class="w"> </span><span class="nn">lightkurve</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lk</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span> <span class="o">=</span> <span class="n">lk</span><span class="o">.</span><span class="n">search_targetpixelfile</span><span class="p">(</span><span class="s1">&#39;Pi Mensae&#39;</span><span class="p">,</span> <span class="n">mission</span><span class="o">=</span><span class="s1">&#39;TESS&#39;</span><span class="p">,</span> <span class="n">sector</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">search_result</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+SearchResult containing 2 data products.
+
+<table id="table6040854544">
+<thead><tr><th>#</th><th>mission</th><th>year</th><th>author</th><th>exptime</th><th>target_name</th><th>distance</th></tr></thead>
+<thead><tr><th></th><th></th><th></th><th></th><th>s</th><th></th><th>arcsec</th></tr></thead>
+<tr><td>0</td><td>TESS Sector 01</td><td>2018</td><td><a href='https://heasarc.gsfc.nasa.gov/docs/tess/data-handling.html'>SPOC</a></td><td>120</td><td>261136679</td><td>0.0</td></tr>
+<tr><td>1</td><td>TESS Sector 01</td><td>2018</td><td><a href='https://archive.stsci.edu/hlsp/tess-spoc'>TESS-SPOC</a></td><td>1800</td><td>261136679</td><td>0.0</td></tr>
+</table></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span> <span class="o">=</span> <span class="n">search_result</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">quality_bitmask</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/tapritc2/tessgi/dev/lightkurve/lightkurve/src/lightkurve/search.py:421: LightkurveWarning: Warning: 2 files available to download. Only the first file has been downloaded. Please use `download_all()` or specify additional criteria (e.g. quarter, campaign, or sector) to limit your search.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+TessTargetPixelFile(TICID: 261136679)
+</pre></div></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">TessTargetPixelFile</span></code>’s have many helpful methods and attributes. For example, you can access basic meta data on the target easily:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">mission</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;TESS&#39;
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">targetid</span>  <span class="c1"># TESS Input Catalog (TIC) Identifier</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+261136679
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">sector</span>  <span class="c1"># TESS Observation Sector</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+1
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">camera</span>  <span class="c1"># TESS Camera Number</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">ccd</span>  <span class="c1"># TESS CCD Number</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2
+</pre></div></div>
+</div>
+<p>We might want to plot the data, we can do this with the <code class="docutils literal notranslate"><span class="pre">plot()</span></code> method. You can add the keyword <code class="docutils literal notranslate"><span class="pre">aperture_mask</span></code> to plot an aperture on top of the image. In this case we’ve used the <code class="docutils literal notranslate"><span class="pre">pipeline_mask</span></code> which is stored in the original .fits file, but you can use any aperture you like.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">pipeline_mask</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_15_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_15_0.png" />
+</div>
+</div>
+<p>If you want to access the original fits file that generated the data you can use the <code class="docutils literal notranslate"><span class="pre">hdu</span></code> attribute of the tpf. This will return an <code class="docutils literal notranslate"><span class="pre">astropy.io.fits</span></code> object, for example</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">hdu</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&lt;astropy.io.fits.hdu.image.PrimaryHDU object at 0x168182350&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x1681b4950&gt;, &lt;astropy.io.fits.hdu.image.ImageHDU object at 0x168104050&gt;, &lt;astropy.io.fits.hdu.table.BinTableHDU object at 0x1693c8fd0&gt;]
+</pre></div></div>
+</div>
+<p>You can access each extension and the data inside it in the same way you’d use <a class="reference external" href="https://docs.astropy.org/en/stable/io/fits/">astropy.io.fits</a>. If you want to access data held in the TPF, such as the time of the observations, you can do that easily by using</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">time</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;Time object: scale=&#39;tdb&#39; format=&#39;btjd&#39; value=[1325.2969605  1325.29834936 1325.29973823 ... 1353.17428819 1353.17567704
+ 1353.1770659 ]&gt;
+</pre></div></div>
+</div>
+<p>This returns the <a class="reference external" href="https://github.com/lightkurve/lightkurve/blob/eb9d3902bf3c2772aade6f4423cfa013394d5af8/src/lightkurve/time.py#L31">Barycentric TESS Julian Date</a> (BTJD), the time in units of days counted since <a class="reference external" href="https://en.wikipedia.org/wiki/Julian_day">Julian Day</a> 2457000.</p>
+<p>You can access the corresponding flux values using</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$[[[146.7256,~110.36988,~56.275379,~\dots,~39.974297,~44.420666,~13.883464],~
+  [12.40297,~22.714397,~35.56646,~\dots,~34.970276,~25.019585,~16.769943],~
+  [0.44226855,~5.2752562,~13.086924,~\dots,~46.673801,~33.625275,~27.014521],~
+  \dots,~
+  [9.5051775,~9.7198277,~1.3479111,~\dots,~70.286613,~42.281826,~11.773497],~
+  [5.480844,~7.9346728,~0.029079039,~\dots,~28.776463,~18.01915,~17.183647],~
+  [14.138475,~13.451326,~-0.96531624,~\dots,~20.603649,~56.804371,~34.841518]],~
+
+ [[146.51241,~102.70561,~59.262955,~\dots,~42.885513,~41.133427,~13.1896],~
+  [16.164961,~24.440937,~35.480656,~\dots,~33.928349,~23.814917,~16.947351],~
+  [2.3862846,~6.945066,~11.343194,~\dots,~46.577034,~33.296593,~29.945692],~
+  \dots,~
+  [10.620657,~10.516301,~3.0659428,~\dots,~71.220596,~41.962044,~12.826224],~
+  [10.079242,~7.8618164,~0.92223197,~\dots,~26.886044,~21.453985,~17.361023],~
+  [17.991547,~14.24785,~-0.89504874,~\dots,~20.604334,~60.592606,~37.873325]],~
+
+ [[147.11113,~103.21112,~55.811832,~\dots,~40.107876,~42.042709,~13.124676],~
+  [12.790492,~24.672497,~35.172104,~\dots,~36.092194,~24.669579,~16.882807],~
+  [3.3153291,~5.3842049,~13.671597,~\dots,~45.781773,~34.207008,~28.059145],~
+  \dots,~
+  [9.0220547,~9.8164053,~1.1087129,~\dots,~71.519043,~41.883968,~11.880278],~
+  [10.229019,~8.0392551,~2.2663257,~\dots,~24.198313,~21.375395,~18.227297],~
+  [18.198311,~11.786104,~3.7386706,~\dots,~18.869574,~57.385891,~33.9618]],~
+
+ \dots,~
+
+ [[161.15787,~108.03804,~51.858047,~\dots,~43.581772,~49.806713,~14.164904],~
+  [18.993103,~26.591282,~40.043686,~\dots,~35.556953,~23.060726,~15.365005],~
+  [0.31335491,~4.2895284,~13.231918,~\dots,~44.335342,~30.73526,~23.809629],~
+  \dots,~
+  [11.251328,~11.421753,~1.3267132,~\dots,~71.324409,~44.457657,~12.979733],~
+  [8.0688171,~6.0919147,~1.6751376,~\dots,~28.238346,~19.737053,~13.095853],~
+  [16.164452,~9.866703,~0.60539889,~\dots,~19.105186,~52.871838,~34.6008]],~
+
+ [[160.29982,~106.82688,~56.284225,~\dots,~40.847317,~46.883755,~11.852956],~
+  [15.770498,~24.730665,~38.325031,~\dots,~34.854435,~24.194151,~18.465128],~
+  [-0.87357336,~6.0762038,~12.59219,~\dots,~45.660442,~32.911388,~26.929564],~
+  \dots,~
+  [11.781666,~12.340034,~3.3242891,~\dots,~71.608543,~44.662857,~12.400381],~
+  [6.859838,~6.1376705,~0.20367658,~\dots,~28.518646,~19.021349,~15.210475],~
+  [18.555952,~14.363894,~0.84527528,~\dots,~20.324306,~58.342983,~32.927376]],~
+
+ [[159.06865,~111.19041,~53.964203,~\dots,~45.936127,~54.400459,~13.901671],~
+  [19.670254,~27.231472,~40.060177,~\dots,~36.812996,~26.284605,~16.961464],~
+  [-0.7221055,~7.5333309,~11.48659,~\dots,~46.671589,~31.16301,~26.355782],~
+  \dots,~
+  [11.926732,~12.063825,~-0.36293313,~\dots,~73.793037,~42.813068,~10.06179],~
+  [7.8724666,~6.7322803,~2.5688095,~\dots,~30.497356,~17.394106,~14.637597],~
+  [19.632471,~13.151638,~0.61876702,~\dots,~21.240358,~55.385933,~35.322235]]] \; \mathrm{\frac{e^{-}}{s}}$</div></div>
+</div>
+<p>Flux is a <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> with a shape of (TIME x PIXELS x PIXELS). If you want to access just the first frame you can use</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tpf</span><span class="o">.</span><span class="n">flux</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$[[146.7256,~110.36988,~56.275379,~\dots,~39.974297,~44.420666,~13.883464],~
+ [12.40297,~22.714397,~35.56646,~\dots,~34.970276,~25.019585,~16.769943],~
+ [0.44226855,~5.2752562,~13.086924,~\dots,~46.673801,~33.625275,~27.014521],~
+ \dots,~
+ [9.5051775,~9.7198277,~1.3479111,~\dots,~70.286613,~42.281826,~11.773497],~
+ [5.480844,~7.9346728,~0.029079039,~\dots,~28.776463,~18.01915,~17.183647],~
+ [14.138475,~13.451326,~-0.96531624,~\dots,~20.603649,~56.804371,~34.841518]] \; \mathrm{\frac{e^{-}}{s}}$</div></div>
+</div>
+<p>These values are in units electrons per second.</p>
+<section id="Building-Light-Curves-from-TPFs">
+<h2>Building Light Curves from TPFs<a class="headerlink" href="#Building-Light-Curves-from-TPFs" title="Link to this heading">¶</a></h2>
+<p>We can use the <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.KeplerTargetPixelFile.to_lightcurve.html">to_lightcurve()</a> method to turn this TPF into a light curve using <em>Simple Aperture Photometry</em>. This will put an aperture on the target, and sum up the flux in all the pixels inside the aperture.</p>
+<p>The default for <code class="docutils literal notranslate"><span class="pre">to_lightcurve()</span></code> is to use the mask generated by the TESS pipeline.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can use the plot function to take a look at the data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_28_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_28_0.png" />
+</div>
+</div>
+<p>This looks pretty good, but maybe we can improve things by creating a new aperture.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aperture_mask</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">create_threshold_mask</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Plot that aperture</span>
+<span class="n">tpf</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_30_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_30_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_32_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_32_0.png" />
+</div>
+</div>
+<p>There’s a long term trend in this dataset, which we can remove with a simple smoothing filter. You can use the <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.LightCurve.flatten.html">lc.flatten()</a> method to apply and divide the <a class="reference external" href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savitzky-Golay smoothing filter</a>. Here we’ll use a <code class="docutils literal notranslate"><span class="pre">window_length</span></code> of 1001 cadences, which is roughly a 5% of the full length of the light curve.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Number of cadences in the full light curve</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(18264,)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">flat_lc</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<span class="n">flat_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_35_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_35_0.png" />
+</div>
+</div>
+<p>The light curve looks much flatter. Unfortunately there is a portion of the light curve that is very noisy, due to a jitter in the TESS spacecraft. We can remove this simply by masking the light curve. First we’ll select the times that had the jitter.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Flag the times that are good quality</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">flat_lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1346</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">flat_lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1350</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Then we can just clip those times out.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">masked_lc</span> <span class="o">=</span> <span class="n">flat_lc</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+<span class="n">masked_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_39_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_39_0.png" />
+</div>
+</div>
+<p>We can use <em>Lightkurve</em> to plot these two light curves over each other to see the difference.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># First define the `matplotlib.pyplot.axes`</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">flat_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">()</span>
+
+<span class="c1"># Pass that axis to the next plot</span>
+<span class="n">masked_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;masked&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_41_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_41_0.png" />
+</div>
+</div>
+<p>This looks much better. Now we might want to clip out some outliers from the light curve. We can do that with a simple lightkurve function <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.LightCurve.remove_outliers.html">remove_outliers()</a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clipped_lc</span> <span class="o">=</span> <span class="n">masked_lc</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">clipped_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_43_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_43_0.png" />
+</div>
+</div>
+<p>It’s a little hard to see these data because of the plotting style. Let’s use a scatter plot instead. We can do this with the <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.LightCurve.scatter.html">lc.scatter()</a> method. This method works in the same way that <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.scatter.html">matplotlib.pyplot.scatter</a> works, and takes in the same keyword arguments.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clipped_lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_45_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_45_0.png" />
+</div>
+</div>
+<p>We can also add errorbars using the <a class="reference external" href="https://lightkurve.github.io/lightkurve/reference/api/lightkurve.LightCurve.errorbar.html">lc.errorbar()</a> method.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">clipped_lc</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">s</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">clipped_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">);</span>  <span class="c1"># alpha determines the transparency</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_47_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_47_0.png" />
+</div>
+</div>
+<p>Finally let’s use <code class="docutils literal notranslate"><span class="pre">lightkurve</span></code> to fold the data at the exoplanet orbital period and see if we can see the transit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">folded_lc</span> <span class="o">=</span> <span class="n">clipped_lc</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">6.27</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">1325.504</span><span class="p">)</span>
+<span class="n">folded_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_49_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_49_0.png" />
+</div>
+</div>
+<p>It looks like there’s something there, but it’s hard to see. Let’s bin the light curve to reduce the number of points, but also reduce the uncertainty of those points.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="n">binned_lc</span> <span class="o">=</span> <span class="n">folded_lc</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+<span class="n">binned_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_51_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_51_0.png" />
+</div>
+</div>
+<p>And now we can see the transit of Pi Men c!</p>
+<p>Note that you can actually do all these steps in just a few lines:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">lc</span><span class="p">[(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1346</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1350</span><span class="p">)]</span>
+<span class="n">lc</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="n">sigma</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">6.27</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">1325.504</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="n">time_bin_size</span><span class="o">=</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span><span class="o">.</span><span class="n">errorbar</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_53_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_53_0.png" />
+</div>
+</div>
+</section>
+<section id="Comparing-two-apertures">
+<h2>Comparing two apertures<a class="headerlink" href="#Comparing-two-apertures" title="Link to this heading">¶</a></h2>
+<p>In the above tutorial we used our own aperture instead of the pipeline aperture. Let’s compare the results from using these two different apertures.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the default</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">tpf</span><span class="o">.</span><span class="n">pipeline_mask</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<span class="n">lc</span> <span class="o">=</span> <span class="n">lc</span><span class="p">[(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1346</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1350</span><span class="p">)]</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">6.27</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">1325.504</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+
+<span class="c1"># Use a custom aperture</span>
+<span class="n">custom_lc</span> <span class="o">=</span> <span class="n">tpf</span><span class="o">.</span><span class="n">to_lightcurve</span><span class="p">(</span><span class="n">aperture_mask</span><span class="o">=</span><span class="n">aperture_mask</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">window_length</span><span class="o">=</span><span class="mi">1001</span><span class="p">)</span>
+<span class="n">custom_lc</span> <span class="o">=</span> <span class="n">custom_lc</span><span class="p">[(</span><span class="n">custom_lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="mi">1346</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">custom_lc</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">1350</span><span class="p">)]</span><span class="o">.</span><span class="n">remove_outliers</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mf">6.27</span><span class="p">,</span> <span class="n">epoch_time</span><span class="o">=</span><span class="mf">1325.504</span><span class="p">)</span><span class="o">.</span><span class="n">bin</span><span class="p">(</span><span class="mi">5</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;Default aperture&#39;</span><span class="p">)</span>
+<span class="n">custom_lc</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Custom aperture&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_56_0.png" src="../../_images/tutorials_3-science-examples_exoplanets-recover-first-tess-candidate_56_0.png" />
+</div>
+</div>
+<p>The importance of using different aperture masks is clearly visible in the figure above. Note however that the data archive at MAST also contains lightcurve products which have more advanced systematics removal methods applied. We will explore those in a future tutorial!</p>
+</section>
+</section>
+
+
+              </div>
+              
+              
+              <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="exoplanets-recover-a-known-planet.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">How to recover a known planet in Kepler data?</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="exoplanets-machine-learning-preprocessing.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Machine learning style preprocessing with lightkurve</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+              
+          </main>
+          
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+<footer class="footer mt-5 mt-md-0">
+  <div class="container">
+    
+    <div class="footer-item">
+      <p class="copyright">
+    &copy; Copyright Lightkurve developers.<br>
+</p>
+    </div>
+    
+    <div class="footer-item">
+      <p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 8.2.3.<br>
+</p>
+    </div>
+    
+  </div>
+</footer>
+  </body>
+</html>

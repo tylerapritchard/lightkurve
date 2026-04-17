@@ -1,0 +1,41 @@
+﻿lightkurve.SearchResult
+=======================
+
+.. currentmodule:: lightkurve
+
+.. autoclass:: SearchResult
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SearchResult.__init__
+      ~SearchResult.download
+      ~SearchResult.download_all
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SearchResult.author
+      ~SearchResult.dec
+      ~SearchResult.display_extra_columns
+      ~SearchResult.distance
+      ~SearchResult.exptime
+      ~SearchResult.mission
+      ~SearchResult.obsid
+      ~SearchResult.ra
+      ~SearchResult.table
+      ~SearchResult.target_name
+      ~SearchResult.unique_targets
+      ~SearchResult.year
+   
+   
